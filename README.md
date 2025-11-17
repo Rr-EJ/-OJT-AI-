@@ -67,38 +67,10 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 
 ### 🤖 4. Chrome 웹가이드 챗봇 
 
-- 자연어 질의를 통해 **사내 규정, 프로세스, 매뉴얼** 안내
-- “지금 해야 할 일”, “오늘 중요한 일정” 등 **개인화된 업무 브리핑 제공**
-- 반복되는 Q&A를 자동화하여 **HR/총무/운영 담당자의 부담 감소**
-- 실시간 질의를 통해 **업무 중 발생하는 작은 의문 즉시 해결**
+- 사용자의 요청에 따라 웹페이지 내 버튼이나 메뉴 위치를 화면위에 **오버레이(시각적 안내)를 표시** 
+- 사용자의 질문을 웹페이지의 관련 콘텐츠와 매칭하여 핵심만 뽑아 자연어로 답변
 
 ---
-
-
-
-
-##  Gmail
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ## 크롬 챗봇
@@ -127,6 +99,169 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 - 사이드 패널이 자동으로 열리지 않으면 chrome://extensions에서 확장을 다시 로드하거나 Chrome을 재시작합니다.
 - API 요청이 401/403이면 .env의 API 키 권한과 철자를 다시 점검하세요.
 - 서버 주소를 변경해야 한다면 panel.js 안의 safeFetch("http://localhost:3000/…") 부분을 원하는 도메인으로 수정합니다.
+
+
+
+
+
+
+##  Gmail
+
+
+
+
+## 🏗️ 전체 시스템 아키텍처
+
+### 1. 시스템 구성도
+
+
+
+## 🤖 AI 에이전트 워크플로우 상세
+
+### 1. Multi-Step Workflow 아키텍처 (LangGraph 기반)
+
+
+
+
+### 2. Sequence Diagram
+
+
+#### 2.2 AI 채팅 (메일조회 예시)
+- 
+
+#### 2.3 AI 채팅 (메일전송 예시)
+- “
+
+
+### 3. 새로운 워크플로우 구조
+
+#### 3-1. 워크플로우 오케스트레이터 (LangGraph 노드 구조)
+- 모든 요청은 **오케스트레이터 노드**를 통해 진입하며,
+  - 의도 분석 → 라우팅 → 후속 에이전트 호출 → 결과 병합  
+  을 담당합니다.
+- 각 노드는 공통 상태(State)를 공유해,  
+  현재까지의 검색 결과·편집 이력·사용자 설정 등을 기반으로 다음 액션을 결정합니다.
+
+#### 3-2. DocumentSearchAgent (핵심 라우팅 구조)
+- 유저 쿼리를 **키워드 + 의미 기반 검색 쿼리**로 변환하고,
+  - 로컬 문서
+  - 업로드 파일
+  - 외부 시스템 연동 결과  
+  를 통합해서 검색합니다.
+- 검색 결과는 후속 에이전트(요약, 편집, 보고서 생성 등)에 넘겨질 수 있도록  
+  **표준화된 구조(문서 ID, 스니펫, 스코어 등)** 로 반환됩니다.
+
+#### 3-3. DocumentEditorAgent (핵심 라우팅 구조)
+- 문서 편집 요청을 분석해
+  - 요약 / 구조 재편성 / 문체·톤 변경 / 특정 섹션 편집  
+  등의 **편집 전략을 선택**합니다.
+- 선택된 전략에 따라 LLM 프롬프트를 구성하고,  
+  결과를 HTML/Markdown 등 프론트엔드가 바로 사용할 수 있는 형태로 반환합니다.
+- 편집 이력을 상태에 누적해, **연속적인 편집 세션**을 지원합니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 🔧 기술 스택
+
+### 🖥 Frontend
+- **React 19 + Vite** – 모던 프론트엔드 개발 환경
+- **Tiptap** – 리치 텍스트 에디터 기반 문서 편집
+- **Tailwind CSS** – 반응형 UI 디자인
+- **React Big Calendar** – 일정 관리 인터페이스
+- **Axios** – API 통신
+
+### ⚙️ Backend
+- **JiraAPI** – 이슈 CRUD/검색 연동
+- **Google APIs (Gmail)** – 메일데이터 연동
+- **FastAPI** – 고성능 비동기 웹 프레임워크
+- **SQLModel** – 타입 세이프 ORM
+- **SQLite** – 로컬 데이터베이스
+
+### 🤖 AI & RAG
+- **OpenAI GPT-4o** – 메인 LLM 모델
+- **LangChain & LangGraph** – 에이전트 워크플로우 구성·관리
+- **ChromaDB** – 벡터 DB(문서 임베딩 저장)
+- **CLIP 이미지 임베딩** - PDF 내 이미지 의미 기반 검색·분석
+- **OCR 엔진** - 스캔/이미지 PDF에서 텍스트 추출 (PDF 챗봇용)
+
+### ☁️ Infrastructure
+- **Docker** – 컨테이너 기반 배포
+- **AWS** – 클라우드 인프라 EC2
+
+
+## 📁 프로젝트 구조
+
+```bash
+FinalProject/
+├── backend/                          # FastAPI 백엔드
+│   ├── ChatBot/                      # AI 챗봇 모듈
+│   │   ├── agents/                   # 에이전트 정의
+│   │   ├── config/                   # 환경설정
+│   │   ├── core/                     # 상태·워크플로 그래프
+│   │   ├── prompts/                  # 시스템 프롬프트
+│   │   ├── tools/                    # 검색·편집 툴 & 전략
+│   │   └── utils/                    # 에러 핸들링 등 유틸
+│   ├── database/                     # DB 레이어(SQLModel)
+│   │   ├── models/                   # 캘린더·채팅·문서·유저 모델
+│   ├── routers/                      # API 라우터(auth, chat, document 등)
+│   ├── services/                     # 서비스 레이어
+│   ├── etc/
+│   │   └── llm_tools/                # RAG, 외부 API, hwpx 처리 등
+│   ├── main.py                       # FastAPI 엔트리포인트
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── frontend-ui/                      # React 프론트엔드
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── components/               # UI 컴포넌트
+│   │   ├── assets/
+│   │   └── index.js / main.jsx
+│   ├── tailwind.config.js
+│   ├── vite.config.js
+│   └── Dockerfile
+│
+├── chroma_db/                        # ChromaDB 저장소
+│   └── chroma.sqlite3
+├── tests/                            # 유닛·통합 테스트
+│   ├── test_agents.py
+│   ├── test_api.py
+│   ├── test_database.py
+│   └── test_integration_advanced.py
+├── locust/                           # 부하 테스트 리포트
+├── editable_markdown/                # 편집 가능한 문서 샘플
+└── uploaded_files/                   # 업로드된 사용자 파일
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
