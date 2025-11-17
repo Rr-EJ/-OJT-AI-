@@ -219,7 +219,7 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 
 ### ⚙️ Backend
 - **JiraAPI** – 이슈 CRUD/검색 연동
-- **Google APIs (Gmail)** – 메일데이터 연동
+- **Google APIs (Gmail)** – Google OAuth 인증및 ,메일데이터 연동
 - **FastAPI** – 고성능 비동기 웹 프레임워크
 - **SQLModel** – 타입 세이프 ORM
 - **SQLite** – 로컬 데이터베이스
