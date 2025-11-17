@@ -211,18 +211,17 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 ## 🔧 기술 스택
 
 ### 🖥 Frontend
-- **React 19 + Vite** – 모던 프론트엔드 개발 환경
-- **Tiptap** – 리치 텍스트 에디터 기반 문서 편집
-- **Tailwind CSS** – 반응형 UI 디자인
-- **React Big Calendar** – 일정 관리 인터페이스
-- **Axios** – API 통신
-
+- **HTML5** – 사이드 패널 UI 구조 및 마크업, 웹페이지(Side Panel UI Structure & Markup)
+- **Vanilla JavaScript** – 순수 자바스크립트 기반 (프레임워크 없음)
+- **Chrome.Tabs API** – 탭 정보 조히 및 제어 
+- **CSS Variables** – 다크/라이트 테마 전환 (Dark/Light Theme Switching)
+- **CSS Flexbox** – 반응형 레이아웃 구성 (Responsive Layout Structure)
+- **Async/Await** – 비동기 작업 처리 (Asynchronous Task Handling)
+  
 ### ⚙️ Backend
 - **JiraAPI** – 이슈 CRUD/검색 연동
 - **Google APIs (Gmail)** – Google OAuth 인증및 ,메일데이터 연동
 - **FastAPI** – 고성능 비동기 웹 프레임워크
-- **SQLModel** – 타입 세이프 ORM
-- **SQLite** – 로컬 데이터베이스
 
 ### 🤖 AI & RAG
 - **OpenAI GPT-4o** – 메인 LLM 모델
