@@ -133,11 +133,46 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 
 ## 👥 팀 소개
 
-| 이름   | 역할                           | 담당 영역                                                           | GitHub |
-|--------|--------------------------------|----------------------------------------------------------------------|--------|
-| 홍민식 | ⚡ PM & Backend Developer       | 프로젝트 기획·관리, Gmail Agent, LangGraph 및 REST API 설계, Gmail API 연동 | [@minnnsik](https://github.com/minnnsik) |
-| 최민석 | ⚡ Backend Developer            | 시스템 총괄, Jira Agent, 이슈 CRUD/검색, Vector DB 연동, 공통 REST API 설계·구현 | [@Minsuk1014](https://github.com/Minsuk1014) |
-| 한승희 | ⚡ Backend Developer            | PDF 챗봇, 문서 요약·이미지 분석, PDF RAG 파이프라인 구성                     | [@seunghee-han](https://github.com/seunghee-han) |
-| 김민규 | 🎨 Frontend Developer & DevOps | 메인 Web 페이지 UI, 에이전트 연동 화면, Docker 기반 배포 환경 구성           | [@kmklifegk](https://github.com/kmklifegk) |
-| 유의정 | 🎨 Frontend Developer           | WebGuide 챗봇, Chat UI/UX, 오버레이 인터랙션 구현                            | [@Rr-EJ](https://github.com/Rr-EJ) |
+<table>
+  <thead>
+    <tr>
+      <th align="center" width="120">이름</th>
+      <th align="center" width="180">역할</th>
+      <th align="left">담당 영역</th>
+      <th align="center" width="140">GitHub</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">홍민식</td>
+      <td align="center">⚡ PM & Backend Developer</td>
+      <td align="left">프로젝트 기획·관리, Gmail Agent, LangGraph 및 REST API 설계, Gmail API 연동</td>
+      <td align="center"><a href="https://github.com/minnnsik">@minnnsik</a></td>
+    </tr>
+    <tr>
+      <td align="center">최민석</td>
+      <td align="center">⚡ Backend Developer</td>
+      <td align="left">시스템 총괄, Jira Agent, 이슈 CRUD/검색, Vector DB 연동, 공통 REST API 설계·구현</td>
+      <td align="center"><a href="https://github.com/Minsuk1014">@Minsuk1014</a></td>
+    </tr>
+    <tr>
+      <td align="center">한승희</td>
+      <td align="center">⚡ Backend Developer</td>
+      <td align="left">PDF 챗봇, 문서 요약·이미지 분석, PDF RAG 파이프라인 구성</td>
+      <td align="center"><a href="https://github.com/seunghee-han">@seunghee-han</a></td>
+    </tr>
+    <tr>
+      <td align="center">김민규</td>
+      <td align="center">🎨 Frontend Developer & DevOps</td>
+      <td align="left">메인 Web 페이지 UI, 에이전트 연동 화면, Docker 기반 배포 환경 구성</td>
+      <td align="center"><a href="https://github.com/kmklifegk">@kmklifegk</a></td>
+    </tr>
+    <tr>
+      <td align="center">유의정</td>
+      <td align="center">🎨 Frontend Developer</td>
+      <td align="left">WebGuide 챗봇, Chat UI/UX, 오버레이 인터랙션 구현</td>
+      <td align="center"><a href="https://github.com/Rr-EJ">@Rr-EJ</a></td>
+    </tr>
+  </tbody>
+</table>
 
