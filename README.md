@@ -457,7 +457,6 @@ FinalProject/
 └── uploaded_files/                   # 업로드된 사용자 파일
 
 
-
 # 📊 추진 배경 및 기대 효과
 
 ## 📈 추진 배경
