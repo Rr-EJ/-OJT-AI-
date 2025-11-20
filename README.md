@@ -148,10 +148,185 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 
 
 
+# Gmail 에이전트
+
+## 폴더 개요
+
+### 백엔드 (Python FastAPI)
+- `main.py`: FastAPI 서버 메인 파일, Gmail 에이전트 API 엔드포인트 제공
+- `agent.py`: Gmail 에이전트 메인 클래스, LangGraph 기반 워크플로우 관리
+- `gmail_api_client.py`: Gmail API 클라이언트, 메일 조회/전송/수정 기능
+- `llm_client.py`: OpenAI API 클라이언트, 자연어 처리 및 이메일 생성
+- `graph_builder.py`: LangGraph 그래프 빌더, 에이전트 워크플로우 구성
+- `nodes.py`: LangGraph 노드 구현, 각 작업 단계 처리
+- `routing.py`: 라우팅 로직, 사용자 입력에 따른 액션 결정
+- `state.py`: 상태 관리 시스템, 대화 컨텍스트 및 슬롯 관리
+- `requirements.txt`: Python 의존성 패키지 목록
+
+### 프론트엔드 (Chrome Extension)
+- `chat_ 2/manifest.json`: Chrome 확장 프로그램 매니페스트, 사이드 패널 확장 선언 (Chrome 114+ 호환)
+- `chat_ 2/panel.html/css/js`: 사이드 패널 UI 처리
+- `chat_ 2/content.js`: 웹페이지 분석 및 하이라이트 오버레이 담당
+- `chat_ 2/service_worker.js`: 탭 이벤트 처리 및 메시지 브릿지 관리
+- `chat_ 2/server.js`: 로컬 백엔드 서버 (Express), OpenAI API와 통신 (선택사항)
+- `chat_ 2/config.js`: API 서버 주소 설정 (기본값: `http://43.202.132.108:8000` 또는 `http://localhost:8000`)
+
+**참고**: 확장 프로그램은 기본적으로 `http://localhost:8000` 또는 `http://43.202.132.108:8000`에 연결되며, FastAPI 서버가 실행 중이어야 합니다.
+
+## 사전 준비
+
+### Python 백엔드
+- Python 3.8 이상 권장
+- OpenAI API Key를 `.env` 파일에 저장:
+  ```
+  OPENAI_API_KEY=your-api-key-here
+  ```
+- Google API 자격 증명 파일 (`credentials.json`) 준비
+- 의존성 설치:
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+### Chrome Extension (선택사항)
+- Node.js 18 이상 권장 (Express 서버 사용 시)
+- 의존성 설치:
+  ```bash
+  cd chat_2
+  npm install
+  ```
+
+## 백엔드 실행
+
+### FastAPI 서버 실행 (메인 백엔드)
+```bash
+python main.py
+```
+
+서버가 성공적으로 시작되면 콘솔에 다음 메시지가 표시됩니다:
+```
+🚀 FastAPI 서버 시작 중...
+📍 로컬 접속:
+   서버 URL: http://localhost:8000
+   API 문서: http://localhost:8000/docs
+   헬스 체크: http://localhost:8000/health
+```
+
+오류가 발생하면 API 키 설정을 다시 확인하세요.
+
+### Express 서버 실행 (선택사항, 웹 가이드 모드용)
+```bash
+cd chat_2
+node server.js
+```
+
+서버가 성공적으로 시작되면 콘솔에 다음 메시지가 표시됩니다:
+```
+Server running at http://localhost:3000
+```
+
+## 크롬 확장 프로그램 등록
+
+1. Chrome에서 `chrome://extensions/` 접속
+2. 우측 상단의 "개발자 모드" 활성화
+3. "압축해제된 확장 프로그램을 로드합니다" 클릭
+4. `chat_ 2` 폴더 선택
+5. 설치 후 서비스 워커가 자동으로 사이드 패널을 엽니다. 새 탭에서도 사이드 패널이 유지됩니다.
+
+**사이드 패널이 보이지 않는 경우:**
+- 브라우저 우측 상단의 사이드 패널 아이콘에서 "MS Side Chat" 선택
+- 또는 `Ctrl+Shift+S` 단축키 사용
+
+## 사용 흐름
+
+### Gmail 에이전트 모드 (기본)
+1. 패널에 입력한 메시지는 FastAPI 서버의 `/api/chat` 엔드포인트로 전송됩니다
+2. 에이전트는 LangGraph 기반 워크플로우를 통해 다음 작업을 수행합니다:
+   - **메일 조회**: "메일온거 보여줘", "기획팀 메일 확인해줘"
+   - **메일 전송**: "수신자: 홍길동, 회의 메일 보내줘"
+   - **초안 생성**: "회의 메일 초안 작성해줘"
+   - **템플릿 사용**: "템플릿 보여줘", "1번 회의요청 템플릿 사용"
+   - **메일 분류**: "메일 분류해줘"
+3. Human-in-the-loop 절차:
+   - 메일 전송/수정 작업은 사용자 승인을 거칩니다
+   - 프론트엔드에서 yes/no 버튼으로 승인 입력을 받습니다
+   - 승인 후에만 실제 Gmail API 호출이 수행됩니다
+4. 대화 내용은 `chrome.storage.local`에 저장됩니다
+
+### 웹 가이드 모드 (선택사항)
+- "Web Guide Mode" 버튼으로 페이지 분석 및 하이라이트 기능을 토글할 수 있습니다
+- `content.js`가 DOM을 읽어 오버레이를 생성합니다
+- PDF 업로드, 히스토리, 테마 토글 기능은 `panel.js`에서 처리합니다
+
+## 문제 해결 팁
+
+### 패널이 "Connecting..." 상태에서 멈춤
+- `python main.py`가 실행 중인지 확인하세요
+- 포트 8000 충돌 여부를 확인하세요:
+  ```bash
+  lsof -i :8000  # macOS/Linux
+  netstat -ano | findstr :8000  # Windows
+  ```
+- `config.js`에서 `API_BASE_URL`이 올바른 주소로 설정되어 있는지 확인하세요
+
+### 사이드 패널이 자동으로 열리지 않음
+- `chrome://extensions/`에서 확장 프로그램을 다시 로드하세요
+- Chrome을 재시작해보세요
+- 서비스 워커가 활성화되어 있는지 확인하세요
+
+### 401/403 API 요청 오류
+- `.env` 파일의 `OPENAI_API_KEY` 권한 및 철자를 다시 확인하세요
+- Google API 자격 증명 파일 (`credentials.json`)이 올바른지 확인하세요
+- Gmail API 스코프가 올바르게 설정되어 있는지 확인하세요
+
+### 서버 주소 변경이 필요한 경우
+- `chat_ 2/config.js` 파일에서 `API_BASE_URL` 값을 수정하세요:
+  ```javascript
+  const API_BASE_URL = "http://your-server-address:8000";
+  ```
+- `chat_ 2/manifest.json`의 `host_permissions`에도 새 주소를 추가하세요:
+  ```json
+  "host_permissions": [
+    "http://your-server-address:8000/*"
+  ]
+  ```
+
+### Gmail API 인증 오류
+- `credentials.json` 파일이 프로젝트 루트에 있는지 확인하세요
+- `token.json` 파일이 만료되었을 수 있습니다. 삭제 후 재인증하세요
+- Google Cloud Console에서 Gmail API가 활성화되어 있는지 확인하세요
+
+## 주요 기능
+
+### 1. 자연어 메일 조회
+- "메일온거 보여줘"
+- "기획팀 요청 메일 보여줘"
+- "읽지 않은 메일 확인해줘"
+
+### 2. 이메일 초안 생성
+- "회의 메일 초안 작성해줘"
+- "프로젝트 보고서 메일 작성해줘"
+
+### 3. 템플릿 시스템
+- 5가지 비즈니스 템플릿 제공 (회의 요청, 보고서 제출, 인사, 질문/문의, 감사 인사)
+- "템플릿 보여줘"로 목록 확인
+- "1번 회의요청"으로 템플릿 사용
+
+### 4. Human-in-the-loop 보안
+- 메일 전송 전 사용자 승인 필수
+- 초안 수정 시 확인 절차
+- 잘못된 작업으로 인한 데이터 손상 방지
+
+### 5. 실시간 메일 동기화
+- 60초마다 자동 동기화 (메모리 최적화)
+- 최신 메일 정보 유지
 
 
 
-##  Gmail
+
+
+
+
+
 
 
 
