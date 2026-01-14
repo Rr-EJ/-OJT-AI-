@@ -1,122 +1,158 @@
-# 🔥 AI MATE – 세 가지 시스템으로 시작되는 첫 걸음 
-SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
+# AI MATE – 신입사원 OJT AI 업무 비서 시스템
+
+## 프로젝트 개요
+**AI MATE**는 Retrieval-Augmented Generation(RAG) 기반 LLM 기술을 활용해  
+사내 문서 검색 → 요약 → 편집/생성 → 업무 관리 → 메일 조회 → 웹 가이드까지 지원하는  
+**신입사원 온보딩 특화 AI 비서 시스템**입니다.
+
+신입사원이 입사 시 반복적인 인수인계와 적응 부담을 줄이고,  
+**자연어 질문·요청만으로 업무를 이어갈 수 있도록 돕는 것**이 핵심 목표입니다.
+
+
+**추진 배경**
+현대 조직은 잦은 인사 이동과 신입사원 채용으로 인해  
+새로운 구성원이 **복잡한 디지털 업무 환경에 빠르게 적응하는 것**이 중요한 과제입니다.
+
+- 각 시스템의 메뉴 구조와 용어가 달라 혼란 발생  
+- 보고·요청·문의 메일 및 이슈 등록 등 비즈니스 커뮤니케이션 형식 이해 부족  
+- 반복적인 문서·메일·티켓 작성으로 업무 피로와 시간 낭비  
+- 정보가 메일·문서·이슈·채팅 등에 분산되어 우선순위 판단 어려움  
+
+기존 매뉴얼·OJT만으로는 한계가 있어,  
+**자연어 기반으로 업무 화면 안내와 메일·이슈·문서 작업을 지원하는 AI 파트너**가 필요합니다.
+
+
+## 핵심 목표
+- 신입사원의 사내업무 조기 적응  
+- 자연어 기반 직관적 업무 보조 제공  
+- 온보딩 속도 향상 및 조직 적응력 증대  
+
+
+
+## 주요 기능
+
+| 기능 | 설명 | 예시 |
+|------|------|------|
+| **Gmail** | - Gmail API 연동으로 받은편지함 실시간 불러오기<br>- 자연어 기반 메일 검색/필터링/상세 보기<br>- 템플릿 기반 메일 작성·수정, 초안 생성<br>- 대화형 프롬프트 지원 | “마케팅팀에서 온 메일 보내줘”<br>“김부장에게 메일 보내고 싶어” |
+| **Jira** | - 자연어로 이슈 생성/검색/수정/삭제<br>- 프로젝트/제목/설명/담당자/중요도 기준 검색<br>- VectorDB(Chroma) 기반 의미 검색<br>- Jira API + VectorDB 자동 동기화 | “MKT 프로젝트에 작업 만들어줘” → 새 이슈 생성<br>“MKT-27 제목 수정해줘” → 제목 업데이트<br>“MKT-27 삭제해줘” → 이슈 삭제 |
+| **PDF 문서** | - 선택 영역 텍스트 자동 추출<br>- 한국어 ↔ 영어 번역 지원<br>- 핵심 요약 제공<br>- RAG 기반 문서 Q&A<br>- 요약/번역/질문 응답 이력 저장 | “이 문서 핵심만 알려줘”<br>“3페이지 그래프 설명해줘” |
+| **Chrome 웹가이드** | - 웹페이지 버튼/메뉴 위치 오버레이 표시<br>- 관련 콘텐츠 매칭 후 자연어 답변 제공 | 웹페이지 내 시각적 안내 + 핵심 답변 |
 
 ---
 
-## 📋 프로젝트 개요
+## 기술 스택
 
-**AI MATE** 는 Retrieval-Augmented Generation(RAG) 기반 LLM 기술을 활용하여  
-**사내 문서 검색 → 요약 → 편집/생성 →  업무관리 → 메일 조회 → 웹가이드 →  **까지 한 번에 지원하는  
-**신입사원  OJT AI  업무 비서 시스템**입니다.
+🖥 **Frontend** 
+| 사용 기술 | 설명 |
+|------|-----------|
+| HTML5 | 사이드 패널 UI 구조 및 마크업 |
+|  Vanilla JavaScript | 순수 자바스크립트 기반 (프레임워크 없음) |
+| Chrome.Tabs API | 탭 정보 조회 및 제어 |
+| CSS Variables | 다크/라이트 테마 전환 |
+| CSS Flexbox | 반응형 레이아웃 구성 |
+| Async/Await | 비동기 작업 처리 |
 
-신입사원이 입사하는 동안   반복적인 업무 인수인계 업무 적응을  줄이고,  
-사용자가 **자연어로 질문·요청만 해도 업무를 이어갈 수 있도록** 돕는 것이 핵심입니다.
+⚙️ **Backend** 
+| 사용 기술 | 설명 |
+|------|-----------|
+| JiraAPI | 이슈 CRUD/검색 연동 |
+| Google APIs (Gmail) | Google OAuth 인증 및 메일 데이터 연동 |
+| FastAPI | 고성능 비동기 웹 프레임워크 |
 
----
+ 🤖 **AI & RAG** 
+| 사용 기술 | 설명 |
+|------|-----------|
+| OpenAI GPT-4o | 메인 LLM 모델 |
+| LangChain & LangGraph | 에이전트 워크플로우 구성·관리 |
+| ChromaDB | 벡터 DB(문서 임베딩 저장) |
+| CLIP 이미지 임베딩 | PDF 내 이미지 의미 기반 검색·분석 |
+| OCR 엔진 | 스캔/이미지 PDF에서 텍스트 추출 |
 
-## 🎯 핵심 목표
-
-- 🔁 **신입사원의 사내업무 조기적응화** 
-- 💬 **자연어 기반 직관적 업무 보조** 제공  
-- 🧑‍💼 **신입사원 온보딩 속도 향상** 및 조직 적응력 증대  
-- 
-
----
-## 👥 팀 소개
-
-<table>
-  <thead>
-    <tr>
-      <th align="center" width="120">이름</th>
-      <th align="center" width="180">역할</th>
-      <th align="left">담당 영역</th>
-      <th align="center" width="140">GitHub</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">홍민식</td>
-      <td align="center">⚡ PM & Backend Developer</td>
-      <td align="left">프로젝트 기획·관리, Gmail Agent, LangGraph 및 REST API 설계, Gmail API 연동</td>
-      <td align="center"><a href="https://github.com/minnnsik">@minnnsik</a></td>
-    </tr>
-    <tr>
-      <td align="center">최민석</td>
-      <td align="center">⚡ Backend Developer</td>
-      <td align="left">시스템 총괄, Jira Agent, 이슈 CRUD/검색, Vector DB 연동, 공통 REST API 설계·구현</td>
-      <td align="center"><a href="https://github.com/Minsuk1014">@Minsuk1014</a></td>
-    </tr>
-    <tr>
-      <td align="center">한승희</td>
-      <td align="center">⚡ Backend Developer</td>
-      <td align="left">PDF 챗봇, 문서 요약·이미지 분석, PDF RAG 파이프라인 구성</td>
-      <td align="center"><a href="https://github.com/seunghee-han">@seunghee-han</a></td>
-    </tr>
-    <tr>
-      <td align="center">김민규</td>
-      <td align="center">🎨 Frontend Developer & DevOps</td>
-      <td align="left">메인 Web 페이지 UI, 에이전트 연동 화면, Docker 기반 배포 환경 구성</td>
-      <td align="center"><a href="https://github.com/kmklifegk">@kmklifegk</a></td>
-    </tr>
-    <tr>
-      <td align="center">유의정</td>
-      <td align="center">🎨 Frontend Developer</td>
-      <td align="left">WebGuide 챗봇, Chat UI/UX, 오버레이 인터랙션 구현</td>
-      <td align="center"><a href="https://github.com/Rr-EJ">@Rr-EJ</a></td>
-    </tr>
-  </tbody>
-</table>
+☁️ **Infrastructure** 
+| 사용 기술 | 설명 |
+|------|-----------|
+| Docker | 컨테이너 기반 배포 |
+| AWS EC2 | 클라우드 인프라 |
 
 
 
-## ✨ 주요 기능
+## 🏗️ 전체 시스템 아키텍처
 
-### 🔍 1. Gmail
+### 시스템 구성도
+<img width="1862" height="735" alt="image" src="https://github.com/user-attachments/assets/ae3b4dfe-7b2e-4a6a-983d-4fa0eb310aa4" />
 
-- Gmail API 연동을 통해 받은편지함 불러오기  **실시간으로 불러오기**
-- 자연어로 **메일 검색 / 필터링 / 메일상세 보기**
-- 템플릿기반 메일작성 및 메일수정, 메일직접작성 , 자연어 기반 초안생성 및 메일수정 
-- 대화형 프롬프트를 통해 **“마케팅팀에서 온 메일 보내줘 ”**, **“김부장에게 메일을 보내고 싶어”** 등 질의 가능
+### 상세 워크플로우
+| 크롬 익스텐션 |Jira Agent – 라우팅 | Gmail Agent – 라우팅|
+|---|---|---|
+|<img width="1928" height="705" alt="image" src="https://github.com/user-attachments/assets/fe71ead0-7029-4b40-9902-867467be9274" />|<img width="726" height="670" alt="image" src="https://github.com/user-attachments/assets/b0d281aa-b7da-4eec-baa7-f219883ee4b1" />|<img width="639" height="759" alt="image" src="https://github.com/user-attachments/assets/95ed7340-65bd-440f-a454-3ba224d89280" />|
 
----
-
-### 📝 2. Jira
-
-- 자연어 한줄로 Jira 이슈 **생성 / 검색 / 수정 / 삭제** 까지 처리
-  예)  'MKT 프로젝트에 부트캠프 테스트 A 작업 만들어줘' -> MKT 프로젝트에 새 이슈 생성
-  예)  'MKT-27 제목을 수정된 시나리오로 바꿔줘 -> 해당 이슈 제목 업데이트
-  예)  'MKT-27 삭제해줘' -> 이슈삭제
-
-- **프로젝트 / 제목 / 설명 / 담당자 / 중요도** 기준으로 검색 지원
-  -  'MKT 프로젝트에서 부트캠프 테스트 검색해줘' -> A, B 이슈 모두 조회
-  -  '지라에서 담당자 최민석인 거 검색해줘'
-  -  '지라에서 중요도 높은 거 보여줘'
-
-- Chroma 기반 VectorDB를 활용한 **의미 기반 이슈 검색**
--  "프로모션과 관련된 이슈", "Figma 시안 제작 해야 하는 거" 처럼
-   키워드가 조금 달라도 관련 이슈를 함계 찾아줌
-
--  데이터는 Jira API + VectorDB(Chroma)를 통해 **자동 동기화**되어,
-   최신 이슈 상태를 기준으로 답변을 한다.
----
-
-### 🗓️ 3. PDF 문서 번역 및 문서요약
-
-- PDF 내 **선택한 영역의 텍스트를 자동 추출**하고, 한/영 기반으로 **핵심만 요약**해주는 기능  
-- 문서 안 특정 문단·표 등을 선택하면 **한국어 ↔ 영어 자동 번역** 지원  
-- “이 문서 핵심만 알려줘”, “3페이지 그래프 설명해줘”처럼 질문하면  
-  RAG 기반으로 **문서 내용을 이해해서 답변하는 챗봇 기능** 제공  
-- 요약·번역·질문 응답 이력을 저장해, 동일 문서 재조회 시 **연속적인 대화 흐름 유지**
 
 
 ---
 
-### 🤖 4. Chrome 웹가이드 챗봇 
+## 🎯 기대 효과
 
-- 사용자의 요청에 따라 웹페이지 내 버튼이나 메뉴 위치를 화면위에 **오버레이(시각적 안내)를 표시** 
-- 사용자의 질문을 웹페이지의 관련 콘텐츠와 매칭하여 핵심만 뽑아 자연어로 답변
+| 효과 | 설명 |
+|------|------|
+| ⏱ **업무·온보딩 시간 단축** | 반복 작업 자동화, 자연어 기반 검색/초안 지원 |
+| 📋 **표준화된 지식 전수** | 최신 프로세스 기반 일관된 절차 제공, 표준 업무 방식 학습 |
+| 🤝 **협업 효율성 향상** | Gmail·Jira·웹 시스템 통합 인터페이스, 자연어 기반 검색·정리 |
+| 🧑‍💼 **온보딩 경험 개선** | Human-in-the-loop 승인 절차, 화면 안내, 자동 초안 생성 |
+
+
 
 ---
+
+
+
+# 상세 설명 
+
+
+## 📁 프로젝트 구조
+```
+FinalProject/
+├── backend/                          # FastAPI 백엔드
+│   ├── ChatBot/                      # AI 챗봇 모듈
+│   │   ├── agents/                   # 에이전트 정의
+│   │   ├── config/                   # 환경 설정
+│   │   ├── core/                     # 상태·워크플로 그래프
+│   │   ├── prompts/                  # 시스템 프롬프트
+│   │   ├── tools/                    # 검색·편집 툴 & 전략
+│   │   └── utils/                    # 에러 핸들링 등 유틸
+│   ├── database/                     # DB 레이어 (SQLModel)
+│   │   └── models/                   # 캘린더·채팅·문서·유저 모델
+│   ├── routers/                      # API 라우터 (auth, chat, document 등)
+│   ├── services/                     # 서비스 레이어
+│   ├── etc/
+│   │   └── llm_tools/                # RAG, 외부 API, hwpx 처리 등
+│   ├── main.py                       # FastAPI 엔트리포인트
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── frontend-ui/                      # React 프론트엔드
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── components/               # UI 컴포넌트
+│   │   ├── assets/
+│   │   └── index.js / main.jsx
+│   ├── tailwind.config.js
+│   ├── vite.config.js
+│   └── Dockerfile
+│
+├── chroma_db/                        # ChromaDB 저장소
+│   └── chroma.sqlite3
+│
+├── tests/                            # 유닛·통합 테스트
+│   ├── test_agents.py
+│   ├── test_api.py
+│   ├── test_database.py
+│   └── test_integration_advanced.py
+│
+├── locust/                           # 부하 테스트 리포트
+├── editable_markdown/                # 편집 가능한 문서 샘플
+└── uploaded_files/                   # 업로드된 사용자 파일
+```
+
 
 
 ## 크롬 챗봇
@@ -148,11 +184,11 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 
 
 
-# Gmail 에이전트
+## Gmail 에이전트
 
-## 폴더 개요
+### 폴더 개요
 
-### 백엔드 (Python FastAPI)
+#### 백엔드 (Python FastAPI)
 - `main.py`: FastAPI 서버 메인 파일, Gmail 에이전트 API 엔드포인트 제공
 - `agent.py`: Gmail 에이전트 메인 클래스, LangGraph 기반 워크플로우 관리
 - `gmail_api_client.py`: Gmail API 클라이언트, 메일 조회/전송/수정 기능
@@ -163,7 +199,7 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 - `state.py`: 상태 관리 시스템, 대화 컨텍스트 및 슬롯 관리
 - `requirements.txt`: Python 의존성 패키지 목록
 
-### 프론트엔드 (Chrome Extension)
+#### 프론트엔드 (Chrome Extension)
 - `chat_ 2/manifest.json`: Chrome 확장 프로그램 매니페스트, 사이드 패널 확장 선언 (Chrome 114+ 호환)
 - `chat_ 2/panel.html/css/js`: 사이드 패널 UI 처리
 - `chat_ 2/content.js`: 웹페이지 분석 및 하이라이트 오버레이 담당
@@ -172,6 +208,8 @@ SK Networks Family AI Camp 15기 최종 프로젝트 HinTon팀
 - `chat_ 2/config.js`: API 서버 주소 설정 (기본값: `http://43.202.132.108:8000` 또는 `http://localhost:8000`)
 
 **참고**: 확장 프로그램은 기본적으로 `http://localhost:8000` 또는 `http://43.202.132.108:8000`에 연결되며, FastAPI 서버가 실행 중이어야 합니다.
+
+---
 
 ## 사전 준비
 
@@ -236,6 +274,8 @@ Server running at http://localhost:3000
 - 브라우저 우측 상단의 사이드 패널 아이콘에서 "MS Side Chat" 선택
 - 또는 `Ctrl+Shift+S` 단축키 사용
 
+---
+
 ## 사용 흐름
 
 ### Gmail 에이전트 모드 (기본)
@@ -256,6 +296,10 @@ Server running at http://localhost:3000
 - "Web Guide Mode" 버튼으로 페이지 분석 및 하이라이트 기능을 토글할 수 있습니다
 - `content.js`가 DOM을 읽어 오버레이를 생성합니다
 - PDF 업로드, 히스토리, 테마 토글 기능은 `panel.js`에서 처리합니다
+
+
+---
+
 
 ## 문제 해결 팁
 
@@ -294,216 +338,6 @@ Server running at http://localhost:3000
 - `credentials.json` 파일이 프로젝트 루트에 있는지 확인하세요
 - `token.json` 파일이 만료되었을 수 있습니다. 삭제 후 재인증하세요
 - Google Cloud Console에서 Gmail API가 활성화되어 있는지 확인하세요
-
-## 주요 기능
-
-### 1. 자연어 메일 조회
-- "메일온거 보여줘"
-- "기획팀 요청 메일 보여줘"
-- "읽지 않은 메일 확인해줘"
-
-### 2. 이메일 초안 생성
-- "회의 메일 초안 작성해줘"
-- "프로젝트 보고서 메일 작성해줘"
-
-### 3. 템플릿 시스템
-- 5가지 비즈니스 템플릿 제공 (회의 요청, 보고서 제출, 인사, 질문/문의, 감사 인사)
-- "템플릿 보여줘"로 목록 확인
-- "1번 회의요청"으로 템플릿 사용
-
-### 4. Human-in-the-loop 보안
-- 메일 전송 전 사용자 승인 필수
-- 초안 수정 시 확인 절차
-- 잘못된 작업으로 인한 데이터 손상 방지
-
-### 5. 실시간 메일 동기화
-- 60초마다 자동 동기화 (메모리 최적화)
-- 최신 메일 정보 유지
-
-
-
-
-
-
-
-
-
-
-
-
-## 🏗️ 전체 시스템 아키텍처
-
-### 1. 시스템 구성도
-
-
-
-## 🤖 AI 에이전트 워크플로우 상세
-
-### 1. Multi-Step Workflow 아키텍처 (LangGraph 기반)
-
-
-
-
-### 2. Sequence Diagram
-
-
-#### 2.2 AI 채팅 (메일조회 예시)
-- 
-
-#### 2.3 AI 채팅 (메일전송 예시)
-- “
-
-
-### 3. 새로운 워크플로우 구조
-
-#### 3-1. 워크플로우 오케스트레이터 (LangGraph 노드 구조)
-- 모든 요청은 **오케스트레이터 노드**를 통해 진입하며,
-- 의도 분석 → 라우팅 → 후속 에이전트 호출 → 결과 병합을 담당합니다.
-- 각 노드는 공통 상태(State)를 공유해,   현재까지의 검색 결과·편집 이력·사용자 설정 등을 기반으로 다음 액션을 결정합니다.
-
-#### 3-2. Gmail Agent (핵심 라우팅 구조)
-
-<img width="307" height="365" alt="핵심 라우팅 지메일에이전트 " src="https://github.com/user-attachments/assets/566a9f0c-1ee0-4e76-860d-e932b0510ccb" />
-
-
-#### 3-3. Jira Agent (핵심 라우팅 구조)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 🔧 기술 스택
-
-### 🖥 Frontend
-- **HTML5** – 사이드 패널 UI 구조 및 마크업, 웹페이지(Side Panel UI Structure & Markup)
-- **Vanilla JavaScript** – 순수 자바스크립트 기반 (프레임워크 없음)
-- **Chrome.Tabs API** – 탭 정보 조히 및 제어 
-- **CSS Variables** – 다크/라이트 테마 전환 (Dark/Light Theme Switching)
-- **CSS Flexbox** – 반응형 레이아웃 구성 (Responsive Layout Structure)
-- **Async/Await** – 비동기 작업 처리 (Asynchronous Task Handling)
-  
-### ⚙️ Backend
-- **JiraAPI** – 이슈 CRUD/검색 연동
-- **Google APIs (Gmail)** – Google OAuth 인증및 ,메일데이터 연동
-- **FastAPI** – 고성능 비동기 웹 프레임워크
-
-### 🤖 AI & RAG
-- **OpenAI GPT-4o** – 메인 LLM 모델
-- **LangChain & LangGraph** – 에이전트 워크플로우 구성·관리
-- **ChromaDB** – 벡터 DB(문서 임베딩 저장)
-- **CLIP 이미지 임베딩** - PDF 내 이미지 의미 기반 검색·분석
-- **OCR 엔진** - 스캔/이미지 PDF에서 텍스트 추출 (PDF 챗봇용)
-
-### ☁️ Infrastructure
-- **Docker** – 컨테이너 기반 배포
-- **AWS** – 클라우드 인프라 EC2
-
-
-## 📁 프로젝트 구조
-'''
-FinalProject/
-├── backend/                          # FastAPI 백엔드
-│   ├── ChatBot/                      # AI 챗봇 모듈
-│   │   ├── agents/                   # 에이전트 정의
-│   │   ├── config/                   # 환경 설정
-│   │   ├── core/                     # 상태·워크플로 그래프
-│   │   ├── prompts/                  # 시스템 프롬프트
-│   │   ├── tools/                    # 검색·편집 툴 & 전략
-│   │   └── utils/                    # 에러 핸들링 등 유틸
-│   ├── database/                     # DB 레이어 (SQLModel)
-│   │   └── models/                   # 캘린더·채팅·문서·유저 모델
-│   ├── routers/                      # API 라우터 (auth, chat, document 등)
-│   ├── services/                     # 서비스 레이어
-│   ├── etc/
-│   │   └── llm_tools/                # RAG, 외부 API, hwpx 처리 등
-│   ├── main.py                       # FastAPI 엔트리포인트
-│   ├── Dockerfile
-│   └── requirements.txt
-│
-├── frontend-ui/                      # React 프론트엔드
-│   ├── src/
-│   │   ├── App.jsx
-│   │   ├── components/               # UI 컴포넌트
-│   │   ├── assets/
-│   │   └── index.js / main.jsx
-│   ├── tailwind.config.js
-│   ├── vite.config.js
-│   └── Dockerfile
-│
-├── chroma_db/                        # ChromaDB 저장소
-│   └── chroma.sqlite3
-│
-├── tests/                            # 유닛·통합 테스트
-│   ├── test_agents.py
-│   ├── test_api.py
-│   ├── test_database.py
-│   └── test_integration_advanced.py
-│
-├── locust/                           # 부하 테스트 리포트
-├── editable_markdown/                # 편집 가능한 문서 샘플
-└── uploaded_files/                   # 업로드된 사용자 파일
-'''
-
-
-# 📊 추진 배경 및 기대 효과
-
-## 📈 추진 배경
-
-현대 조직에서는 잦은 인사 이동, 신입사원 채용, 부서 간 협업이 이루어지며  
-새로운 구성원이 **복잡한 디지털 업무 환경에 빠르게 적응하는 것**이 중요한 과제로 떠오르고 있습니다.
-
-이메일, 일정, 이슈 관리(Jira), 사내 웹 시스템 등 다양한 툴이 혼재된 환경에서  
-신입사원과 전배자는 다음과 같은 어려움을 겪고 있습니다.
-
-- 각 시스템의 메뉴 구조와 용어가 달라 **어디서 무엇을 해야 할지 알기 어려움**
-- 보고·요청·문의 메일 및 이슈 등록 등 **비즈니스 커뮤니케이션 형식에 대한 이해 부족**
-- 유사한 내용의 문서·메일·티켓을 반복 작성하는 과정에서 **업무 피로와 시간 낭비 발생**
-- 필요한 정보가 메일·문서·이슈·채팅 등에 분산되어 있어 **우선순위 판단과 히스토리 파악이 어려움**
-
-기존의 매뉴얼·OJT·구두 안내만으로는 이러한 문제를 해결하기에 한계가 있어,  
-**자연어로 질문하면 실제 업무 화면 위에서 길을 안내해 주고,  
-이메일·이슈·일정·문서 작업을 함께 처리해 주는 온보딩 특화 AI 파트너 “AI MATE”**가 필요하게 되었습니다.
-
----
-
-## 🎯 기대 효과
-
-### ⏱ 업무·온보딩 시간 단축
-- 반복적인 메일·이슈·일정 작성 및 정리 작업을 자동화하여  
-  신입사원과 전배자의 초기 적응 기간을 단축합니다.
-- 자연어 명령만으로 필요한 정보 검색과 문서/이메일 초안 생성을 지원하여  
-  실제 업무에 집중할 수 있는 시간을 확보합니다.
-
-### 📋 표준화된 지식 전수
-- 사수·팀마다 다른 설명 대신, AI MATE가 최신 프로세스를 기준으로  
-  **일관된 절차와 메시지**를 제공하여 업무 품질을 균일화합니다.
-- 대표적인 비즈니스 시나리오(보고, 요청, 회의, 문의, 감사 등)를  
-  템플릿과 워크플로 형태로 제공해 신입사원이 자연스럽게 **표준 업무 방식을 학습**하도록 돕습니다.
-
-### 🤝 협업 효율성 향상
-- Gmail, Jira, 사내 웹 시스템 등을 단일 인터페이스로 연결하여  
-  이슈 공유, 문의 응답, 피드백 과정을 끊김 없이 이어줍니다.
-- “기획팀 관련 이슈 보여줘”, “어제 회의 메일 정리해줘”와 같은 자연어 기반 검색·정리를 통해  
-  부서 간 커뮤니케이션과 협업 속도를 높입니다.
-
-### 🧑‍💼 신입사원 온보딩 경험 개선
-- 실수에 대한 불안감을 줄이기 위해, 중요한 작업은 **휴먼 루프(Human-in-the-loop)** 승인 절차를 거쳐  
-  안전하게 실행되도록 설계합니다.
-- 문서 기반 Q&A, 단계별 화면 안내, 자동 초안 생성 기능을 통해  
-  신입사원이 **사수에게 의존하지 않고도 스스로 업무를 익히는 경험**을 제공합니다.
 
 
 
